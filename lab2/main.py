@@ -38,7 +38,7 @@ class LL:
 
         terminals = re.findall(terminals_regex, data)
         terminals = list(set(terminals))
-        terminals.append('$')
+        terminals.append('#')
 
         return terminals
 
@@ -122,7 +122,7 @@ class LL:
     def getFollow(self):
         first = self.getFirst()
         follow = {nonterminal: set() for nonterminal in self.nonterminals}
-        follow[self.start] = set(['$'])
+        follow[self.start] = set(['#'])
 
         while True:
             updated = False
@@ -175,14 +175,14 @@ class LL:
         t = []
         for x, y in dict.items():
             row = [x]
-            for s in ['i', '+', '*', '(', ')', '$']:
+            for s in ['i', '+', '*', '(', ')', '#']:
                 if s in y:
                     value = ' '.join(map(str, y[s]))
                     row.append(value)
                 else:
                     row.append('')
             t.append(row)
-        headers = ['', 'i', '+', '*', '(', ')', '$']
+        headers = ['', 'i', '+', '*', '(', ')', '#']
         print(tabulate(t, headers, tablefmt='rounded_grid'))
 
     def build_predictive_table(self):
@@ -210,14 +210,14 @@ class LL:
     def analyzeStack(self, input_str: str):
         terminals = self.terminals
         table = self.predictive_table
-        stack = ['$', self.start]
-        input_str += '$'
+        stack = ['#', self.start]
+        input_str += '#'
         index = 0
         parse_steps = []
         while stack:
             top = stack[-1]
             if top in terminals:
-                if top == '$' and input_str[index] == '$':
+                if top == '#' and input_str[index] == '#':
                     parse_steps.append((''.join(stack), input_str[index:], 'Accept'))
                     break
                 if top == input_str[index]:
