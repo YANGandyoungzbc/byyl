@@ -18,6 +18,7 @@ class LL:
         """
         初始化LL
         :param grammer: 语法的文件名
+        :param input_str: 输入的串
         """
         self.filename = grammer
         self.terminals = self.getTerminals()
